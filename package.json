@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keremciu/react-component-library.git"
+    "url": "git+https://github.com/bugzy-app/bugzy-react-sdk.git"
   },
   "keywords": [
     "React",
@@ -30,12 +30,12 @@
     "Sass",
     "Storybook"
   ],
-  "author": "Kerem Sevencan",
+  "author": "tanvesh01",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/keremciu/react-component-library/issues"
+    "url": "https://github.com/bugzy-app/bugzy-react-sdk/issues"
   },
-  "homepage": "https://github.com/keremciu/react-component-library#readme",
+  "homepage": "https://github.com/bugzy-app/bugzy-react-sdk#readme",
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
