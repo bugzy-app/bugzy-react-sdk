@@ -1,0 +1,65 @@
+.outerCategoryContainer{
+    padding: 1rem;
+}
+.categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-gap: 16px; */
+    padding: 0.5rem;
+    width: min-content;
+    background-color: #f4f4f5;
+    border-radius: 0.5rem;
+  }
+  
+  .categoryContainer {
+    cursor: pointer;
+    border-radius: 0.6rem;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    width: fit-content;
+  
+    div {
+      text-align: left;
+      font-size: 0.875rem;
+    }
+  
+    p {
+      margin: 0;
+      font-weight: 400;
+      font-size: 0.8rem;
+    }
+  }
+  
+  .questionCategoryStyles {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);
+  }
+  
+  .feedbackCategoryStyles {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);
+    
+  }
+  
+  .bugCategoryStyles {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);
+
+  }
+
+.questionCategoryDefaultStyles {
+    color: grey;
+
+  }
+  
+  .feedbackCategoryDefaultStyles {
+    color: grey;
+  }
+  
+  .bugCategoryDefaultStyles {
+    color: grey;
+    }

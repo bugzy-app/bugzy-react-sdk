@@ -1,0 +1,174 @@
+@import "../typography.scss";
+
+.testComponent {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: 16px;
+  width: 360px;
+  text-align: center;
+
+  .heading {
+    @include heading;
+  }
+}
+
+.overlay {
+  background-color: rgba(128, 128, 128, 0.373);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.modal {
+  background-color: white;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 0.6rem;
+  width: 65vw;
+}
+
+.inputGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 3rem;
+  padding: 16px;
+  padding-top: 0;
+
+  p {
+    font-size: 0.9rem;
+    color: grey;
+  }
+  .urgentContainer {
+    margin-bottom: 0.5rem;
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.inputLabel {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.inputTextarea {
+  --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  border-radius: 0.6rem;
+  border: 1px solid #e4e4e7;
+  padding: 0.6rem 0.8rem;
+  resize: none;
+  height: 100%;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  &:focus {
+    outline: none;
+    border: 1px solid #62625c;
+  }
+}
+
+.sampleImage {
+  border: 1px solid grey;
+  background-color: grey;
+  border-radius: 0.4rem;
+  height: 100%;
+  width: 100%;
+}
+
+.footerContainer {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e4e4e7;
+}
+
+.closeButton {
+  background-color: white;
+  border: 0;
+  color: grey;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-left: 1rem;
+  &:hover {
+    color: black;
+  }
+}
+
+.urgentContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.2rem;
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    p {
+      text-align: left;
+      margin: 0.2rem 0 0 0;
+      font-size: 0.8rem;
+      color: grey;
+    }
+  }
+}
+
+.imageGrid {
+  text-align: left;
+  height: fit-content;
+}
+
+.imageContainer {
+  position: relative;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  border: 1px solid grey;
+  background-color: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.hideImage {
+  background-color: rgba(204, 204, 204, 0.61);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitButtonDefaultStyles {
+  color: white;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.6rem 2rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-weight: 600;
+  font-family: "Inter";
+  background: linear-gradient(180deg, #3d3d3d 0%, #000 100%);
+}
