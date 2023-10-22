@@ -1,5 +1,5 @@
 {
-  "name": "bugzy",
+  "name": "@bugzy/react",
   "version": "0.0.1",
   "main": "build/index.js",
   "module": "build/index.esm.js",
@@ -17,10 +17,7 @@
     "generate": "node ./util/create-component",
     "prepublishOnly": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bugzy-app/bugzy-react-sdk.git"
-  },
+  "repository": "bugzy-app/bugzy-react-sdk",
   "keywords": [
     "React",
     "Component",
