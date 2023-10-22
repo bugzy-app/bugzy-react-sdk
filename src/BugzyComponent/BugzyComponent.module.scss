@@ -15,24 +15,36 @@
 .overlay {
   background-color: rgba(128, 128, 128, 0.373);
   position: fixed;
+  box-sizing: border-box;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   height: 100%;
   width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal {
   background-color: white;
   font-family: "Inter", sans-serif;
   text-align: center;
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 0.6rem;
   width: 65vw;
+  z-index: 10;
 }
 
+.imageGrid {
+  text-align: left;
+  height: fit-content;
+}
 .inputGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -48,6 +60,7 @@
     margin-bottom: 0.5rem;
 
     label {
+      color: #232323;
       font-size: 0.9rem;
       font-weight: 600;
     }
@@ -82,18 +95,6 @@
   &:focus {
     outline: none;
     border: 1px solid #62625c;
-  }
-}
-
-.scrollableGrid {
-  display: flex;
-  overflow-x: scroll;
-  width: 300px;
-  gap: 0.6rem;
-  padding-bottom: 1rem;
-
-  label {
-    font-size: 0.8rem;
   }
 }
 
@@ -132,60 +133,6 @@
       color: grey;
     }
   }
-}
-
-.imageGrid {
-  text-align: left;
-  height: fit-content;
-}
-
-.imageContainer {
-  position: relative;
-  border-radius: 0.4rem;
-  overflow: hidden;
-  width: fit-content;
-  background-color: #d6d6d6;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5rem;
-
-  img {
-    box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.1),
-      0 1px 2px 0px rgba(0, 0, 0, 0.1);
-    height: 140px;
-    width: auto;
-    // max-width: 200px;
-  }
-}
-
-.uploadButton {
-  background-color: white;
-  border: 1px solid #e4e4e7;
-
-  border-radius: 0.6rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  font-family: "Inter";
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    background-color: #f4f4f5;
-  }
-}
-
-.hideImage {
-  background-color: rgba(204, 204, 204, 0.61);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .submitButtonDefaultStyles {

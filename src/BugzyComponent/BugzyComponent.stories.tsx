@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TestComponent } from "./TestComponent";
+import { BugzyComponent } from "./BugzyComponent";
 
 export default {
   title: "TestComponent",
@@ -10,8 +10,7 @@ export const WithText = () => {
   return (
     <>
       <button onClick={() => setIsOpen(true)}>Open</button>
-      {/* @ts-ignore */}
-      <TestComponent isOpen={isOpen} />
+      <BugzyComponent isOpen={isOpen} setOpen={setIsOpen} />
       <HTMLComponent />
     </>
   );

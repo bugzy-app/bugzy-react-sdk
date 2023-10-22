@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./Category.module.scss";
-import { BugIcon, FeedbackIcon, QuestionIcon } from "./icons";
+import styles from "./CategoryGrid.module.scss";
+import { BugIcon, FeedbackIcon, QuestionIcon } from "../../icons";
 
 export const CategoryGrid = ({ issueCategory, setIssueCategory }) => {
   return (
