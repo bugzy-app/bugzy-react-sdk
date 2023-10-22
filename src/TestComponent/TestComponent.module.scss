@@ -85,12 +85,16 @@
   }
 }
 
-.sampleImage {
-  border: 1px solid grey;
-  background-color: grey;
-  border-radius: 0.4rem;
-  height: 100%;
-  width: 100%;
+.scrollableGrid {
+  display: flex;
+  overflow-x: scroll;
+  width: 300px;
+  gap: 0.6rem;
+  padding-bottom: 1rem;
+
+  label {
+    font-size: 0.8rem;
+  }
 }
 
 .footerContainer {
@@ -139,14 +143,38 @@
   position: relative;
   border-radius: 0.4rem;
   overflow: hidden;
-  height: 100%;
-  width: 100%;
-  border: 1px solid grey;
-  background-color: grey;
+  width: fit-content;
+  background-color: #d6d6d6;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 0.5rem;
+
+  img {
+    box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.1),
+      0 1px 2px 0px rgba(0, 0, 0, 0.1);
+    height: 140px;
+    width: auto;
+    // max-width: 200px;
+  }
+}
+
+.uploadButton {
+  background-color: white;
+  border: 1px solid #e4e4e7;
+
+  border-radius: 0.6rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-family: "Inter";
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: #f4f4f5;
+  }
 }
 
 .hideImage {

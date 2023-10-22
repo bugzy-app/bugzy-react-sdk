@@ -1,5 +1,5 @@
 {
-  "name": "@bugzy/react",
+  "name": "bugzy-react",
   "version": "0.0.1",
   "main": "build/index.js",
   "module": "build/index.esm.js",
