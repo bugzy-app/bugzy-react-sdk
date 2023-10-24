@@ -54,7 +54,6 @@
 
   p {
     font-size: 0.9rem;
-    color: grey;
   }
   .urgentContainer {
     margin-bottom: 0.5rem;
@@ -72,6 +71,13 @@
   margin-bottom: 0.3rem;
   font-size: 0.9rem;
   color: gray;
+}
+
+.errorText {
+  color: rgb(187, 0, 0);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  text-align: left;
 }
 
 .inputContainer {
@@ -115,23 +121,6 @@
   padding-left: 1rem;
   &:hover {
     color: black;
-  }
-}
-
-.urgentContainer {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.2rem;
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    p {
-      text-align: left;
-      margin: 0.2rem 0 0 0;
-      font-size: 0.8rem;
-      color: grey;
-    }
   }
 }
 

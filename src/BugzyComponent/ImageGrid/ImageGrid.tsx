@@ -1,12 +1,15 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./ImageGrid.module.scss";
 import { HideEyeIcon } from "../../icons";
+import LoadingComponent from "../LoadingComponent/LoadingComponent";
 
 const ImageGrid = ({
   hideScreenshot,
   setHideScreenshot,
-  imageURLS,
+  renderedImageURLS,
   onFileChange,
+  setUploadingImage,
+  uploadingImages,
 }) => {
   const hiddenFileInput = useRef(null);
 
@@ -16,19 +19,32 @@ const ImageGrid = ({
 
   const handleVisibilityOfScreenshots = (e) => {
     const index = e.target.value;
+    console.log(index, "INDIASD");
+    if (index === "0") {
+      // start uploading the image when you untick the first image
+      console.log("start uploadingajslfkjsdhf");
+      setUploadingImage({ ...uploadingImages, [index]: true });
+    }
     const newHideScreenshot = [...hideScreenshot];
     newHideScreenshot[index] = !newHideScreenshot[index];
     setHideScreenshot(newHideScreenshot);
   };
+
   return (
     <React.Fragment>
       <div className={styles.scrollableGrid}>
-        {imageURLS.map((imageSrc, index) => (
+        {renderedImageURLS.map((imageSrc, index) => (
           <div>
             <div className={styles.imageContainer}>
               {hideScreenshot[index] && (
                 <div className={styles.hideImage}>
                   <HideEyeIcon />
+                </div>
+              )}
+              {!hideScreenshot[index] && uploadingImages?.[index] && (
+                <div className={styles.uploadingImageOverlay}>
+                  <LoadingComponent />
+                  <p>Uploading...</p>
                 </div>
               )}
               <img src={imageSrc} height={"auto"} />
