@@ -6,18 +6,28 @@ import { CategoryGrid } from "./CategoryGrid/CategoryGrid";
 import html2canvas from "html2canvas";
 import ImageGrid from "./ImageGrid/ImageGrid";
 import BugTypeChoice from "./BugTypeChoice/BugTypeChoice";
+import { CheckIcon } from "../icons";
+import LoadingComponent from "./LoadingComponent/LoadingComponent";
 
 interface BugzyResult {
   issueCategory: "question" | "feedback" | "bug";
   selectedBugType?: "low" | "medium" | "high";
   assets: string[];
   content: string;
+  userEmail?: string;
+  metadata: {
+    url: string;
+    innerHeight: number;
+    innerWidth: number;
+    userAgent: string;
+  };
 }
 
 export const BugzyComponent = ({
   isOpen,
   setOpen,
   onClose,
+  userEmail,
 }: BugzyComponentProps): JSX.Element => {
   const [isInternalOpen, setIsInternalOpen] = useState<boolean>(false);
   const [errorString, setErrorString] = useState<string>("");
@@ -36,14 +46,38 @@ export const BugzyComponent = ({
   const [renderedImageURLS, setRenderedImageURLs] = useState([]);
   const [webImageURLS, setWebImageURLS] = useState<string[]>([]);
 
+  const [isSubmittingForm, setIsSubmittingForm] = useState<boolean>(false);
+
   // 1. For the first i.e screenshot, upload it only when its unticked
   // 2. For the rest of the images, upload them when they are selected
 
-  const onFileChange = (e) => {
+  const uploadFileImage = async (image: any, index) => {
+    const formData = new FormData();
+    formData.append("img", image);
+    const response = await fetch("http://localhost:3000/api/image/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    const uploadedURL = data.imgSource;
+    console.log(data);
+
+    let uploadImagesObjectCopy = { ...uploadingImages };
+    uploadImagesObjectCopy = { ...uploadImagesObjectCopy, [index]: false };
+    setUploadingImage(uploadImagesObjectCopy);
+
+    return uploadedURL;
+  };
+
+  const onFileChange = async (e) => {
     if (e.target.files.length < 1) return;
-    const newURLS = [...e.target.files].map((image: any) =>
-      URL.createObjectURL(image)
-    );
+    // uploadFileImage(e.target.files[0]);
+    const newURLS = [...e.target.files];
+    const newURLScopy = [
+      ...renderedImageURLS,
+      ...newURLS.map((image: any) => URL.createObjectURL(image)),
+    ];
     const newImageURLS = [...renderedImageURLS, ...newURLS];
 
     const newHideScreenshotArray = [
@@ -52,15 +86,33 @@ export const BugzyComponent = ({
     ];
 
     let diffInLength = newHideScreenshotArray.length - hideScreenshot.length;
-    let uploadImagesObjectCopy = { ...uploadingImages };
+    let copy = newImageURLS;
+    setRenderedImageURLs(newURLScopy);
+
     if (diffInLength > 0) {
+      let uploadImagesObjectCopy = { ...uploadingImages };
       for (let i = hideScreenshot.length - 1; i <= diffInLength; i++) {
-        uploadImagesObjectCopy = { ...uploadImagesObjectCopy, [i]: true };
+        if (i !== 0) {
+          console.log(copy[i]);
+          uploadImagesObjectCopy = { ...uploadImagesObjectCopy, [i]: true };
+
+          // newImageURLS[i] = URL.createObjectURL(newImageURLS[i]);
+        }
       }
+      setUploadingImage(uploadImagesObjectCopy);
+      const uploadedURLS = [];
+      for (let i = hideScreenshot.length - 1; i <= diffInLength; i++) {
+        if (i !== 0) {
+          const currentUploadedURL = await uploadFileImage(copy[i], i);
+          uploadedURLS.push(currentUploadedURL);
+          // newImageURLS[i] = URL.createObjectURL(newImageURLS[i]);
+        }
+      }
+      const copyOfWebImageURLS = [...webImageURLS, ...uploadedURLS];
+      setWebImageURLS(copyOfWebImageURLS);
     }
-    setUploadingImage(uploadImagesObjectCopy);
+
     setHideScreenshot(newHideScreenshotArray);
-    setRenderedImageURLs(newImageURLS);
   };
 
   useEffect(() => {
@@ -108,6 +160,13 @@ export const BugzyComponent = ({
       issueCategory,
       assets: webImageURLS,
       content: content,
+      userEmail,
+      metadata: {
+        url: window.location.href,
+        innerHeight: window.innerHeight,
+        innerWidth: window.innerWidth,
+        userAgent: window.navigator.userAgent,
+      },
     };
 
     if (issueCategory === "bug") {
@@ -120,7 +179,7 @@ export const BugzyComponent = ({
       return;
     }
   };
-
+  console.log(webImageURLS);
   return (
     <>
       {isInternalOpen &&
@@ -135,6 +194,7 @@ export const BugzyComponent = ({
                 />
                 <div className={styles.inputGrid}>
                   <InputContainer
+                    issueCategory={issueCategory}
                     setContent={setContent}
                     content={content}
                     errorString={errorString}
@@ -147,6 +207,9 @@ export const BugzyComponent = ({
                       setHideScreenshot={setHideScreenshot}
                       renderedImageURLS={renderedImageURLS}
                       onFileChange={onFileChange}
+                      uploadFileImage={uploadFileImage}
+                      setWebImageURLS={setWebImageURLS}
+                      webImageURLS={webImageURLS}
                     />
                     <BugTypeChoice
                       issueCategory={issueCategory}
@@ -156,7 +219,10 @@ export const BugzyComponent = ({
                   </div>
                 </div>
 
-                <FooterContainer closeBugzy={closeBugzy} />
+                <FooterContainer
+                  isSubmittingForm={isSubmittingForm}
+                  closeBugzy={closeBugzy}
+                />
               </form>
             </div>
           </div>,
@@ -166,7 +232,12 @@ export const BugzyComponent = ({
   );
 };
 
-const InputContainer = ({ setContent, content, errorString }) => {
+const InputContainer = ({
+  setContent,
+  content,
+  errorString,
+  issueCategory,
+}) => {
   return (
     <div className={styles.inputContainer}>
       <label className={styles.inputLabel} htmlFor="main_content">
@@ -180,19 +251,34 @@ const InputContainer = ({ setContent, content, errorString }) => {
         onChange={(e) => setContent(e.target.value)}
         value={content}
       ></textarea>
+      {issueCategory === "bug" && (
+        <div className={styles.metadataTextContainer}>
+          <CheckIcon />
+          <p>
+            We have already included metadata of your environment to help the
+            devs that'll work on these bugs
+          </p>
+        </div>
+      )}
       <p className={styles.errorText}>{errorString}</p>
     </div>
   );
 };
 
-const FooterContainer = ({ closeBugzy }) => {
+const FooterContainer = ({ closeBugzy, isSubmittingForm }) => {
   return (
     <div className={styles.footerContainer}>
       <button type="button" className={styles.closeButton} onClick={closeBugzy}>
         Back
       </button>
 
-      <button className={`${styles.submitButtonDefaultStyles}`}>Submit</button>
+      <button
+        disabled={isSubmittingForm}
+        className={`${styles.submitButtonDefaultStyles}`}
+      >
+        {isSubmittingForm && <LoadingComponent />}
+        Submit
+      </button>
     </div>
   );
 };

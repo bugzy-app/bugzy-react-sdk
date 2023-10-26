@@ -135,4 +135,31 @@
   font-weight: 600;
   font-family: "Inter";
   background: linear-gradient(180deg, #3d3d3d 0%, #000 100%);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  &:disabled {
+    background: black;
+    color: #a0a0a0;
+    cursor: not-allowed;
+  }
+}
+
+.metadataTextContainer {
+  border: 1px solid rgb(223, 225, 228);
+  margin-top: 1rem;
+  background-color: rgb(251, 251, 252);
+  display: flex;
+  padding: 12px;
+  align-items: flex-start;
+  width: 100%;
+  gap: 0.5rem;
+  border-radius: 0.4rem;
+  p {
+    text-align: left;
+    color: #4d4d4d;
+    margin: 0;
+    font-size: 0.8rem;
+  }
 }

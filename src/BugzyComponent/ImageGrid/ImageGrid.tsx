@@ -10,24 +10,40 @@ const ImageGrid = ({
   onFileChange,
   setUploadingImage,
   uploadingImages,
+  uploadFileImage,
+  webImageURLS,
+  setWebImageURLS,
 }) => {
   const hiddenFileInput = useRef(null);
-
+  async function dataUrlToFile(
+    dataUrl: string,
+    fileName: string
+  ): Promise<File> {
+    const res: Response = await fetch(dataUrl);
+    const blob: Blob = await res.blob();
+    return new File([blob], fileName, { type: "image/png" });
+  }
   const handleClick = (event) => {
     hiddenFileInput.current.click();
   };
 
-  const handleVisibilityOfScreenshots = (e) => {
+  const handleVisibilityOfScreenshots = async (e) => {
     const index = e.target.value;
     console.log(index, "INDIASD");
+    const newHideScreenshot = [...hideScreenshot];
+    newHideScreenshot[index] = !newHideScreenshot[index];
+    setHideScreenshot(newHideScreenshot);
     if (index === "0") {
       // start uploading the image when you untick the first image
       console.log("start uploadingajslfkjsdhf");
       setUploadingImage({ ...uploadingImages, [index]: true });
+      const uploadedURL = await uploadFileImage(
+        await dataUrlToFile(renderedImageURLS[index], "screenshot"),
+        index
+      );
+      const copyOfWebImageURLS = [...webImageURLS, uploadedURL];
+      setWebImageURLS(copyOfWebImageURLS);
     }
-    const newHideScreenshot = [...hideScreenshot];
-    newHideScreenshot[index] = !newHideScreenshot[index];
-    setHideScreenshot(newHideScreenshot);
   };
 
   return (
