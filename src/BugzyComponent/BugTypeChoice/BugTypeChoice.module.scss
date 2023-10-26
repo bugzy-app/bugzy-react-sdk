@@ -1,3 +1,17 @@
+.hideContainer {
+  visibility: hidden;
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.showContainer {
+  visibility: visible;
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
 .urgentContainer {
   margin-top: 8px;
   display: flex;

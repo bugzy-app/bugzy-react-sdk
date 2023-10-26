@@ -15,10 +15,7 @@ export const CategoryGrid = ({ issueCategory, setIssueCategory }) => {
           onClick={() => setIssueCategory("question")}
         >
           <QuestionIcon />
-          <div>
-            Question
-            {/* <p>How does this...</p> */}
-          </div>
+          <div>Question</div>
         </div>
         <div
           className={`${styles.categoryContainer} ${
@@ -29,10 +26,7 @@ export const CategoryGrid = ({ issueCategory, setIssueCategory }) => {
           onClick={() => setIssueCategory("feedback")}
         >
           <FeedbackIcon />
-          <div>
-            Feedback
-            {/* <p>What if we..</p> */}
-          </div>
+          <div>Feedback</div>
         </div>
         <div
           className={`${styles.categoryContainer} ${
@@ -43,10 +37,7 @@ export const CategoryGrid = ({ issueCategory, setIssueCategory }) => {
           onClick={() => setIssueCategory("bug")}
         >
           <BugIcon />
-          <div>
-            Bug
-            {/* <p>When I do this...</p> */}
-          </div>
+          <div>Bug</div>
         </div>
       </div>
     </div>

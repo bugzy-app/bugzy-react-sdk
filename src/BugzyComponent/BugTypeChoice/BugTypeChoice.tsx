@@ -11,9 +11,9 @@ const BugTypeChoice = ({
   };
   return (
     <div
-      style={{
-        visibility: issueCategory === "bug" ? "visible" : "hidden",
-      }}
+      className={`${styles.bugTypeChoiceContainer} ${
+        issueCategory === "bug" ? styles.showContainer : styles.hideContainer
+      }`}
     >
       <p>Type of bug</p>
       <div className={`${styles.urgentContainer}`}>
