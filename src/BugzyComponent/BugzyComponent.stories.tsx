@@ -5,12 +5,19 @@ export default {
   title: "TestComponent",
 };
 
+const PROJECT_ID = "63abfccb-6685-47d7-bfe0-53aed2f8e064";
+
 export const WithText = () => {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>
       <button onClick={() => setIsOpen(true)}>Open</button>
-      <BugzyComponent isOpen={isOpen} setOpen={setIsOpen} />
+      <BugzyComponent
+        projectID={PROJECT_ID}
+        isOpen={isOpen}
+        setOpen={setIsOpen}
+        userEmail="sarvetanvesh01@gmail.com"
+      />
       <HTMLComponent />
     </>
   );

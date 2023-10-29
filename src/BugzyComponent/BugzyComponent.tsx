@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { BugzyComponentProps } from "./BugzyComponent.types";
 import styles from "./BugzyComponent.module.scss";
@@ -8,35 +8,46 @@ import ImageGrid from "./ImageGrid/ImageGrid";
 import BugTypeChoice from "./BugTypeChoice/BugTypeChoice";
 import { CheckIcon } from "../icons";
 import LoadingComponent from "./LoadingComponent/LoadingComponent";
-
+import packageJson from "../../package.json";
 interface BugzyResult {
-  issueCategory: "question" | "feedback" | "bug";
-  selectedBugType?: "low" | "medium" | "high";
+  type: "question" | "feedback" | "bug";
+  title: string;
+  description: string;
+  projectID: string;
+  urgencyLevel?: "low" | "medium" | "high";
   assets: string[];
-  content: string;
-  userEmail?: string;
-  metadata: {
+  email?: string;
+  deviceInfo: {
     url: string;
     innerHeight: number;
     innerWidth: number;
     userAgent: string;
   };
+  externalConfig: {
+    [key: string]: any;
+  };
+  note: string;
 }
+
+const DOMAIN = "https://www.bugzy.app";
 
 export const BugzyComponent = ({
   isOpen,
   setOpen,
   onClose,
   userEmail,
+  customMetaData,
+  projectID,
 }: BugzyComponentProps): JSX.Element => {
   const [isInternalOpen, setIsInternalOpen] = useState<boolean>(false);
   const [errorString, setErrorString] = useState<string>("");
-
   const [issueCategory, setIssueCategory] =
     useState<"question" | "feedback" | "bug">("question");
   const [selectedBugType, setSelectedBugType] =
     useState<"low" | "medium" | "high">("low");
+  const [email, setEmail] = useState(userEmail);
   const [content, setContent] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   const [uploadingImages, setUploadingImage] = useState<{
     [x: string]: boolean;
@@ -54,14 +65,13 @@ export const BugzyComponent = ({
   const uploadFileImage = async (image: any, index) => {
     const formData = new FormData();
     formData.append("img", image);
-    const response = await fetch("http://localhost:3000/api/image/upload", {
+    const response = await fetch(`${DOMAIN}/api/image/upload`, {
       method: "POST",
       body: formData,
     });
 
     const data = await response.json();
     const uploadedURL = data.imgSource;
-    console.log(data);
 
     let uploadImagesObjectCopy = { ...uploadingImages };
     uploadImagesObjectCopy = { ...uploadImagesObjectCopy, [index]: false };
@@ -93,10 +103,7 @@ export const BugzyComponent = ({
       let uploadImagesObjectCopy = { ...uploadingImages };
       for (let i = hideScreenshot.length - 1; i <= diffInLength; i++) {
         if (i !== 0) {
-          console.log(copy[i]);
           uploadImagesObjectCopy = { ...uploadImagesObjectCopy, [i]: true };
-
-          // newImageURLS[i] = URL.createObjectURL(newImageURLS[i]);
         }
       }
       setUploadingImage(uploadImagesObjectCopy);
@@ -148,38 +155,77 @@ export const BugzyComponent = ({
   };
 
   const generateErrorString = () => {
-    if (webImageURLS.length === 0) {
-      return "Please upload at least one screenshot or explain a bit about your issue.";
+    if (issueCategory === "question") {
+      if (email && !email.includes("@")) {
+        return "Please enter a valid email";
+      }
+      if (!title) {
+        return "Please enter a title";
+      }
+    } else {
+      if (email && !email.includes("@")) {
+        return "Please enter a valid email";
+      }
+      if (webImageURLS.length === 0 && content.length === 0) {
+        return "Please upload at least one screenshot or explain a bit about your issue.";
+      }
     }
   };
 
-  const onSubmitForm = (e) => {
+  const onSubmitForm = async (e) => {
     e.preventDefault();
 
+    const errorString = generateErrorString();
+    setErrorString(errorString);
+    if (errorString) {
+      return;
+    }
+    setIsSubmittingForm(true);
     let result: BugzyResult = {
-      issueCategory,
+      projectID,
+      title: issueCategory === "question" ? title : content.substring(0, 50),
+      description: content,
+      type: issueCategory,
       assets: webImageURLS,
-      content: content,
-      userEmail,
-      metadata: {
+      email,
+      externalConfig: customMetaData,
+      deviceInfo: {
         url: window.location.href,
         innerHeight: window.innerHeight,
         innerWidth: window.innerWidth,
         userAgent: window.navigator.userAgent,
       },
+      note: `Submitted from Bugzy at version: ${packageJson.version}`,
     };
 
     if (issueCategory === "bug") {
-      result = { ...result, selectedBugType };
+      result = { ...result, urgencyLevel: selectedBugType };
     }
 
-    const errorString = generateErrorString();
-    setErrorString(errorString);
-    if (!errorString) {
-      return;
-    }
+    const response = await fetch(`${DOMAIN}/api/issue/submit`, {
+      method: "POST",
+      body: JSON.stringify(result),
+    });
+
+    const data = await response.json().catch((err) => {
+      console.log(err);
+      setIsSubmittingForm(false);
+    });
+    setIsSubmittingForm(false);
+    clearForm();
+    closeBugzy();
   };
-  console.log(webImageURLS);
+
+  const clearForm = () => {
+    setContent("");
+    setTitle("");
+    setWebImageURLS([]);
+    setRenderedImageURLs([]);
+    setHideScreenshot([]);
+    setSelectedBugType("low");
+    setEmail("");
+  };
+
   return (
     <>
       {isInternalOpen &&
@@ -198,6 +244,10 @@ export const BugzyComponent = ({
                     setContent={setContent}
                     content={content}
                     errorString={errorString}
+                    title={title}
+                    setTitle={setTitle}
+                    setEmail={setEmail}
+                    email={email}
                   />
                   <div className={styles.imageGrid}>
                     <ImageGrid
@@ -237,9 +287,46 @@ const InputContainer = ({
   content,
   errorString,
   issueCategory,
+  title,
+  setTitle,
+  email,
+  setEmail,
 }) => {
   return (
     <div className={styles.inputContainer}>
+      <label className={styles.inputLabel} htmlFor="user_email">
+        Email
+      </label>
+      <input
+        style={{
+          marginBottom: "0",
+        }}
+        id="user_email"
+        className={`${styles.inputTextarea} ${styles.titleInputStyles}`}
+        placeholder="What's your email?"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <p id="email_desc">
+        We take emails to give out further updates on your issue
+      </p>
+      {issueCategory === "question" && (
+        <>
+          <label className={styles.inputLabel} htmlFor="question_title">
+            Title
+          </label>
+          <input
+            style={{
+              height: "fit-content",
+            }}
+            id="question_title"
+            className={`${styles.inputTextarea} ${styles.titleInputStyles}`}
+            placeholder="What's the question about?"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </>
+      )}
       <label className={styles.inputLabel} htmlFor="main_content">
         What are you running into?
       </label>

@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import esbuild from "rollup-plugin-esbuild";
 import postcss from "rollup-plugin-postcss";
 import typescript from "rollup-plugin-typescript2";
+import json from "@rollup/plugin-json";
 
 const postcssPresetEnv = require("postcss-preset-env");
 const packageJson = require("./package.json");
@@ -24,6 +25,7 @@ export default {
   ],
   plugins: [
     typescript(),
+    json(),
     peerDepsExternal(),
     resolve({
       browser: true,

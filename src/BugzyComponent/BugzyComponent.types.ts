@@ -3,4 +3,6 @@ export interface BugzyComponentProps {
   onClose?: (x?: any) => any;
   setOpen?: (isOpen: boolean) => any;
   userEmail?: string;
+  customMetaData?: { [key: string]: any };
+  projectID: string;
 }

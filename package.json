@@ -1,6 +1,6 @@
 {
   "name": "bugzy-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "build/index.js",
   "module": "build/index.esm.js",
   "files": [
@@ -40,6 +40,7 @@
   "devDependencies": {
     "@babel/core": "^7.18.9",
     "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@storybook/addon-postcss": "^3.0.0-alpha.1",
     "@storybook/builder-webpack5": "^6.5.9",
