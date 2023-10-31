@@ -29,13 +29,11 @@ const ImageGrid = ({
 
   const handleVisibilityOfScreenshots = async (e) => {
     const index = e.target.value;
-    console.log(index, "INDIASD");
     const newHideScreenshot = [...hideScreenshot];
     newHideScreenshot[index] = !newHideScreenshot[index];
     setHideScreenshot(newHideScreenshot);
     if (index === "0") {
       // start uploading the image when you untick the first image
-      console.log("start uploadingajslfkjsdhf");
       setUploadingImage({ ...uploadingImages, [index]: true });
       const uploadedURL = await uploadFileImage(
         await dataUrlToFile(renderedImageURLS[index], "screenshot"),

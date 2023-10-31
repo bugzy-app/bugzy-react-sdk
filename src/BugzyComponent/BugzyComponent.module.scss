@@ -1,5 +1,26 @@
 @import "../typography.scss";
 
+.header {
+  background-color: #f4f4f5;
+  border-radius: 0.6rem 0.6rem 0 0;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 0.6rem;
+  p {
+    font-size: 0.9rem;
+    margin: 0;
+    color: #4d4d4d;
+  }
+}
+
+.bugzyLogo {
+  width: auto;
+  height: 30px;
+  object-fit: contain;
+}
+
 .testComponent {
   background-color: var(--bg-color);
   color: var(--text-color);
