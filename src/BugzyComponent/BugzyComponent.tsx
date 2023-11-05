@@ -8,7 +8,6 @@ import ImageGrid from "./ImageGrid/ImageGrid";
 import BugTypeChoice from "./BugTypeChoice/BugTypeChoice";
 import { CheckIcon } from "../icons";
 import LoadingComponent from "./LoadingComponent/LoadingComponent";
-import packageJson from "../../package.json";
 interface BugzyResult {
   type: "question" | "feedback" | "bug";
   title: string;
@@ -195,7 +194,7 @@ export const BugzyComponent = ({
         innerWidth: window.innerWidth,
         userAgent: window.navigator.userAgent,
       },
-      note: `Submitted from Bugzy at version: ${packageJson.version}`,
+      note: `Submitted from Bugzy at version: 0.0.5`,
     };
 
     if (issueCategory === "bug") {

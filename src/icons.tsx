@@ -87,6 +87,7 @@ export const CheckIcon = () => (
     style={{
       minWidth: "1.5rem",
       maxWidth: "1.5rem",
+      color: "black",
     }}
   >
     <path

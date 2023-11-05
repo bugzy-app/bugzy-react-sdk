@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "/",
+    "rootDir": "src",
     "declaration": true,
     "declarationDir": "build",
     "resolveJsonModule": true,
